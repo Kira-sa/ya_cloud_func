@@ -11,8 +11,8 @@ on:
   workflow_dispatch:
 
 env:
-  FOLDER_ID: <идентификатор_каталога>
-  SA_ID: <идентификатор_сервисного_аккаунта>
+  FOLDER_ID: b1g0c1gbbfne9m7iccf1
+  SA_ID: ajekn5c70l54fvmkt1qj
   FUNCTION_NAME: from-github-preprod
   FUNCTION_RUNTIME: nodejs22
   FUNCTION_ENTRYPOINT: index.handler
