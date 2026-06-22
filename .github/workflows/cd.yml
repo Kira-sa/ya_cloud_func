@@ -19,8 +19,8 @@ env:
   FOLDER_ID: b1g0c1gbbfne9m7iccf1
   SA_ID: ajekn5c70l54fvmkt1qj
   FUNCTION_NAME: from-github-production
-  FUNCTION_RUNTIME: nodejs22
-  FUNCTION_ENTRYPOINT: index.handler
+  FUNCTION_RUNTIME: python314
+  FUNCTION_ENTRYPOINT: main.handler
   FUNCTION_MEMORY: "128mb"
   FUNCTION_SOURCEROOT: .
   
