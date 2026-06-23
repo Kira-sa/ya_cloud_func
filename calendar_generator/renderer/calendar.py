@@ -23,11 +23,18 @@ def render_png_base64(cfg):
     block_w=area_w//cols
     block_h=area_h//rows
 
-    max_month_w=block_w//3
-    max_month_h=block_h//4
+    if len(years) == 1:
+        month_cols = 3
+        month_rows = 4
+    else:
+        month_cols = 4
+        month_rows = 3
+
+    max_month_w = block_w // month_cols
+    max_month_h = block_h // month_rows
 
     cell=min((max_month_w-10)//7,(max_month_h-18)//6)
-    cell=max(2,int(cell*cfg.scale)) / 2
+    cell=max(2,int(cell*cfg.scale))
 
     for idx,year in enumerate(years):
         bx=pad["left"]+(idx%cols)*block_w
@@ -36,8 +43,8 @@ def render_png_base64(cfg):
         draw.text((bx,by),str(year),fill=cfg.colors["text"],font=font)
 
         for month in range(1,13):
-            mx=bx+((month-1)%4)*max_month_w
-            my=by+20+((month-1)//4)*max_month_h
+            mx = bx + ((month - 1) % 4) * max_month_w
+            my = by + 20 + ((month - 1) // 4) * max_month_h
 
             if cell >= 8:
                 draw.text((mx,my-12),calendar.month_abbr[month],
@@ -61,8 +68,20 @@ def render_png_base64(cfg):
                     x=mx+c*cell
                     y=my+r*cell
 
+                    circle_ratio = 0.7
+                    diameter = int(cell * circle_ratio)
+                    offset = (cell - diameter) // 2
+
                     if cfg.day_style=="circle":
-                        draw.ellipse([x,y,x+cell-1,y+cell-1],fill=color)
+                        draw.ellipse(
+                            [
+                                x + offset,
+                                y + offset,
+                                x + offset + diameter, #+cell-1,
+                                y + offset + diameter #+cell-1
+                            ],
+                            fill=color
+                        )
                     else:
                         draw.rectangle([x,y,x+cell-1,y+cell-1],fill=color)
 

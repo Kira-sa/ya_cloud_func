@@ -6,12 +6,13 @@ class CalendarConfig:
     width:int=1179
     height:int=2556
     background_color:str="#000000"
-    start_date:str="2026-06-22"
-    end_date:str="2026-07-03"
-    scale:float=0.8
+    start_date:str=""
+    end_date:str=""
+    scale:float=1.0
     day_style:str="circle"
     padding:dict=field(default_factory=dict)
     colors:dict=field(default_factory=dict)
+    circle_ratio:float=0.75
 
     @classmethod
     def from_event(cls,e):
@@ -29,4 +30,5 @@ class CalendarConfig:
                 "past":"#5B9CF6","future":"#E0E0E0",
                 "today":"#FF6B35","text":"#000000"
             })
+            circle_ratio=e.get("circle_ratio", 0.75)
         )
