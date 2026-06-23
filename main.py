@@ -1,4 +1,4 @@
-# import json
+import json
 
 from calendar_generator.config import CalendarConfig
 from calendar_generator.renderer.calendar import render_png_base64
@@ -11,7 +11,11 @@ def handler(event, context):
         "headers": {"Content-Type": "image/png"},
         "isBase64Encoded": True,
         # "body": png_b64,
-        "body": {
-            'event': event
-        }
+        "body": json.dumps(
+            {
+                'event': event,
+                'context': context,
+            }, 
+            default=vars,
+        ),
     }
