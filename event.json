@@ -1,4 +1,11 @@
 {
   "width": 1179,
-  "height": 2556
+  "height": 2556,
+  "day_style": "circle",
+  "padding": {
+    "top": 300,
+    "bottom": 350,
+    "left": 50,
+    "right": 50
+  }
 }

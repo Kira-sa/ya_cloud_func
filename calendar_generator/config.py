@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 
 @dataclass
@@ -9,19 +9,24 @@ class CalendarConfig:
     start_date:str=""
     end_date:str=""
     scale:float=1.0
-    layout:str="years"
-    padding:dict=None
+    day_style:str="square"
+    padding:dict=field(default_factory=dict)
+    colors:dict=field(default_factory=dict)
 
     @classmethod
-    def from_event(cls,event):
-        today=date.today()
+    def from_event(cls,e):
+        t=date.today()
         return cls(
-            width=event.get("width",1179),
-            height=event.get("height",2556),
-            background_color=event.get("background_color","#FFFFFF"),
-            start_date=event.get("start_date",f"{today.year}-01-01"),
-            end_date=event.get("end_date",f"{today.year}-12-31"),
-            scale=float(event.get("scale",1.0)),
-            layout="years",
-            padding=event.get("padding",{"top":300,"bottom":350,"left":50,"right":50})
+            width=e.get("width",1179),
+            height=e.get("height",2556),
+            background_color=e.get("background_color","#FFFFFF"),
+            start_date=e.get("start_date",f"{t.year}-01-01"),
+            end_date=e.get("end_date",f"{t.year}-12-31"),
+            scale=float(e.get("scale",1.0)),
+            day_style=e.get("day_style","square"),
+            padding=e.get("padding",{"top":250,"bottom":300,"left":40,"right":40}),
+            colors=e.get("colors",{
+                "past":"#5B9CF6","future":"#E0E0E0",
+                "today":"#FF6B35","text":"#000000"
+            })
         )
