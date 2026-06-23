@@ -6,8 +6,8 @@ class CalendarConfig:
     width:int=1179
     height:int=2556
     background_color:str="#000000"
-    start_date:str=""
-    end_date:str=""
+    start_date:str="2026-06-22"
+    end_date:str="2026-07-03"
     scale:float=1.0
     day_style:str="circle"
     padding:dict=field(default_factory=dict)
@@ -19,7 +19,7 @@ class CalendarConfig:
         return cls(
             width=e.get("width",1179),
             height=e.get("height",2556),
-            background_color=e.get("background_color","#FFFFFF"),
+            background_color=e.get("background_color","#000000"),
             start_date=e.get("start_date",f"{t.year}-01-01"),
             end_date=e.get("end_date",f"{t.year}-12-31"),
             scale=float(e.get("scale",1.0)),
