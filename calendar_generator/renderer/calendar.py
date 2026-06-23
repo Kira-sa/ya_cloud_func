@@ -43,8 +43,8 @@ def render_png_base64(cfg):
         draw.text((bx,by),str(year),fill=cfg.colors["text"],font=font)
 
         for month in range(1,13):
-            mx = bx + ((month - 1) % 4) * max_month_w
-            my = by + 20 + ((month - 1) // 4) * max_month_h
+            mx = bx + ((month - 1) % month_cols) * max_month_w
+            my = by + 20 + ((month - 1) // month_rows) * max_month_h
 
             if cell >= 8:
                 draw.text((mx,my-12),calendar.month_abbr[month],
