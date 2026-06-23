@@ -10,12 +10,12 @@ def handler(event, context):
         "statusCode": 200,
         "headers": {"Content-Type": "image/png"},
         "isBase64Encoded": True,
-        # "body": png_b64,
-        "body": json.dumps(
-            {
-                'event': event,
-                'context': context,
-            }, 
-            default=vars,
+        "body": png_b64,
+        # "body": json.dumps(
+            # {
+            #     'event': event,
+            #     'context': context,
+            # }, 
+            # default=vars,
         ),
     }
