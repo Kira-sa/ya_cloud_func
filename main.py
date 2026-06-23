@@ -12,14 +12,3 @@ def handler(event, context):
         "isBase64Encoded": True,
         "body": png_b64,
     }
-
-
-# def handler(event, context):
-#     return {
-#         'statusCode': 200,
-#         'headers': {
-#             "Content-Type": "image/png"
-#         },
-#         'isBase64Encoded': True,
-#         'body': encoded_png
-#     }

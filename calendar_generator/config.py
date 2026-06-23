@@ -5,11 +5,11 @@ from datetime import date
 class CalendarConfig:
     width:int=1179
     height:int=2556
-    background_color:str="#FFFFFF"
+    background_color:str="#000000"
     start_date:str=""
     end_date:str=""
     scale:float=1.0
-    day_style:str="square"
+    day_style:str="circle"
     padding:dict=field(default_factory=dict)
     colors:dict=field(default_factory=dict)
 
@@ -23,7 +23,7 @@ class CalendarConfig:
             start_date=e.get("start_date",f"{t.year}-01-01"),
             end_date=e.get("end_date",f"{t.year}-12-31"),
             scale=float(e.get("scale",1.0)),
-            day_style=e.get("day_style","square"),
+            day_style=e.get("day_style","circle"),
             padding=e.get("padding",{"top":250,"bottom":300,"left":40,"right":40}),
             colors=e.get("colors",{
                 "past":"#5B9CF6","future":"#E0E0E0",
