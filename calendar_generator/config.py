@@ -29,6 +29,6 @@ class CalendarConfig:
             colors=e.get("colors",{
                 "past":"#5B9CF6","future":"#E0E0E0",
                 "today":"#FF6B35","text":"#000000"
-            })
+            }),
             circle_ratio=e.get("circle_ratio", 0.75)
         )
