@@ -27,7 +27,7 @@ def render_png_base64(cfg):
     max_month_h=block_h//4
 
     cell=min((max_month_w-10)//7,(max_month_h-18)//6)
-    cell=max(2,int(cell*cfg.scale))
+    cell=max(2,int(cell*cfg.scale)) / 2
 
     for idx,year in enumerate(years):
         bx=pad["left"]+(idx%cols)*block_w

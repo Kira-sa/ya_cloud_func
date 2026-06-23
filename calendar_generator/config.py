@@ -8,7 +8,7 @@ class CalendarConfig:
     background_color:str="#000000"
     start_date:str="2026-06-22"
     end_date:str="2026-07-03"
-    scale:float=1.0
+    scale:float=0.8
     day_style:str="circle"
     padding:dict=field(default_factory=dict)
     colors:dict=field(default_factory=dict)
