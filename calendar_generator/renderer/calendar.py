@@ -1,5 +1,6 @@
 import io,base64,calendar
 from datetime import datetime,date
+import math
 from PIL import Image,ImageDraw,ImageFont
 from calendar_generator.layouts.years import compute_year_grid
 from calendar_generator.progress import calc_progress
@@ -42,7 +43,22 @@ def render_png_base64(cfg):
 
         draw.text((bx,by),str(year),fill=cfg.colors["text"],font=font)
 
+        months = []
         for month in range(1,13):
+            month_start = date(year, month, 1)
+            if month == 12:
+                month_end = date(year + 1, 1, 1) - timedelta(days=1)
+            else:
+                month_end = date(year + 1, month + 1, 1) - timedelta(days=1)
+
+            if month_end < start:
+                continue
+
+            if month_start > end:
+                continue
+            
+            months.append(month)
+
             mx = bx + ((month - 1) % month_cols) * max_month_w
             my = by + 20 + ((month - 1) // month_rows) * max_month_h
 
@@ -54,19 +70,25 @@ def render_png_base64(cfg):
 
             for r,w in enumerate(weeks):
                 for c,d in enumerate(w):
-                    if d==0:
+                    if d == 0:
                         continue
 
-                    cur=date(year,month,d)
+                    cur = date(year, month, d)
 
-                    color=cfg.colors["future"]
+                    # Пропускаем даты вне диапазона
+                    if cur < start:
+                        continue
+                    if cur > end:
+                        continue
+
+                    color = cfg.colors["future"]
                     if cur < today:
-                        color=cfg.colors["past"]
+                        color = cfg.colors["past"]
                     elif cur == today:
-                        color=cfg.colors["today"]
+                        color = cfg.colors["today"]
 
-                    x=mx+c*cell
-                    y=my+r*cell
+                    x = mx + c * cell
+                    y = my + r * cell
 
                     circle_ratio = 0.7
                     diameter = int(cell * circle_ratio)
