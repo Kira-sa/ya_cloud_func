@@ -1,7 +1,7 @@
-import io,base64,calendar
-from datetime import datetime,date
+import io, base64, calendar
+from datetime import datetime, date, timedelta
 import math
-from PIL import Image,ImageDraw,ImageFont
+from PIL import Image, ImageDraw, ImageFont
 from calendar_generator.layouts.years import compute_year_grid
 from calendar_generator.progress import calc_progress
 
@@ -49,7 +49,7 @@ def render_png_base64(cfg):
             if month == 12:
                 month_end = date(year + 1, 1, 1) - timedelta(days=1)
             else:
-                month_end = date(year + 1, month + 1, 1) - timedelta(days=1)
+                month_end = date(year, month + 1, 1) - timedelta(days=1)
 
             if month_end < start:
                 continue
