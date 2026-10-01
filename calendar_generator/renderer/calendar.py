@@ -8,7 +8,7 @@ from calendar_generator.progress import calc_progress
 def render_png_base64(cfg):
     img=Image.new("RGB",(cfg.width,cfg.height),cfg.background_color)
     draw=ImageDraw.Draw(img)
-    font=ImageFont.load_default()
+    font=ImageFont.load_default(size=24)
 
     start=datetime.strptime(cfg.start_date,"%Y-%m-%d").date()
     end=datetime.strptime(cfg.end_date,"%Y-%m-%d").date()
@@ -16,7 +16,7 @@ def render_png_base64(cfg):
 
     pad=cfg.padding
     area_w=cfg.width-pad["left"]-pad["right"]
-    area_h=cfg.height-pad["top"]-pad["bottom"]-120
+    area_h=cfg.height-pad["top"]-pad["bottom"]-520
 
     years=list(range(start.year,end.year+1))
     rows,cols=compute_year_grid(years)
@@ -25,14 +25,13 @@ def render_png_base64(cfg):
     block_h=area_h//rows
 
     if len(years) == 1:
-        month_cols = 3
-        month_rows = 4
+        month_cols = 3  # столбцы 
+        month_rows = 3  # строки
     else:
-        month_cols = 4
-        month_rows = 3
+        return "Error: Only one year is supported for rendering."
 
     max_month_w = block_w // month_cols
-    max_month_h = block_h // month_rows
+    max_month_h = block_h // month_rows * 0.7
 
     cell=min((max_month_w-10)//7,(max_month_h-18)//6)
     cell=max(2,int(cell*cfg.scale))
@@ -41,7 +40,8 @@ def render_png_base64(cfg):
         bx=pad["left"]+(idx%cols)*block_w
         by=pad["top"]+(idx//cols)*block_h
 
-        draw.text((bx,by),str(year),fill=cfg.colors["text"],font=font)
+        # Год
+        # draw.text((bx,by),str(year),fill=cfg.colors["text"],font=font)
 
         months = []
         for month in range(1,13):
@@ -59,12 +59,19 @@ def render_png_base64(cfg):
             
             months.append(month)
 
-            mx = bx + ((month - 1) % month_cols) * max_month_w
-            my = by + 20 + ((month - 1) // month_rows) * max_month_h
+            # Координаты месяца
+            i_cols = (month - 1) % month_cols
+            i_rows = (month - 1) // month_rows
+            # ряд
+            mx = bx + i_cols * max_month_w
+            # столбец
+            my = by + 20 + i_rows * max_month_h
 
-            if cell >= 8:
-                draw.text((mx,my-12),calendar.month_abbr[month],
-                          fill=cfg.colors["text"],font=font)
+            # Если много месяцев - подписываем
+            # if cell >= 8:
+            #     # Месяц
+            #     draw.text((mx,my-12),calendar.month_abbr[month],
+            #               fill=cfg.colors["text"],font=font)
 
             weeks=calendar.monthcalendar(year,month)
 
@@ -90,7 +97,7 @@ def render_png_base64(cfg):
                     x = mx + c * cell
                     y = my + r * cell
 
-                    circle_ratio = 0.7
+                    circle_ratio = 0.5
                     diameter = int(cell * circle_ratio)
                     offset = (cell - diameter) // 2
 
@@ -113,9 +120,17 @@ def render_png_base64(cfg):
 
     elapsed,total,pct=calc_progress(start,end,today)
     txt=f"{elapsed}/{total} days ({pct:.1f}%)"
-    draw.text((pad["left"],cfg.height-pad["bottom"]+50),
+    draw.text((pad["left"],cfg.height-pad["bottom"]-40),
               txt,fill=cfg.colors["text"],font=font)
 
     buf=io.BytesIO()
     img.save(buf,"PNG")
+
     return base64.b64encode(buf.getvalue()).decode()
+
+
+def render_png(cfg, filename):
+    generated_img = render_png_base64(cfg)
+    img = Image.open(io.BytesIO(base64.b64decode(generated_img)))
+    img.save(filename, "PNG")
+
