@@ -36,7 +36,7 @@ class CalendarConfig:
             padding=event.get(
                 "padding",
                 {
-                    "top": 250,
+                    "top": 800,
                     "bottom": 300,
                     "left": 40,
                     "right": 40,

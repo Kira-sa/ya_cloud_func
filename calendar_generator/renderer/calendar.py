@@ -9,23 +9,23 @@ from calendar_generator.progress import calc_progress
 
 
 def render_png_base64(cfg: "CalendarConfig"):
-    img=Image.new("RGB",(cfg.width,cfg.height),cfg.background_color)
-    draw=ImageDraw.Draw(img)
-    font=ImageFont.load_default(size=24)
+    img = Image.new("RGB", (cfg.width,cfg.height), cfg.background_color)
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.load_default(size=24)
 
-    start=datetime.strptime(cfg.start_date,"%Y-%m-%d").date()
-    end=datetime.strptime(cfg.end_date,"%Y-%m-%d").date()
-    today=date.today()
+    start = datetime.strptime(cfg.start_date, "%Y-%m-%d").date()
+    end = datetime.strptime(cfg.end_date, "%Y-%m-%d").date()
+    today = date.today()
 
-    pad=cfg.padding
-    area_w=cfg.width-pad["left"]-pad["right"]
-    area_h=cfg.height-pad["top"]-pad["bottom"]-520
+    pad = cfg.padding
+    area_w = cfg.width - pad["left"] - pad["right"]
+    area_h = cfg.height - pad["top"] - pad["bottom"] - 520
 
-    years=list(range(start.year,end.year+1))
-    rows,cols=compute_year_grid(years)
+    years = list(range(start.year, end.year+1))
+    rows,cols = compute_year_grid(years)
 
-    block_w=area_w//cols
-    block_h=area_h//rows
+    block_w = area_w // cols
+    block_h = area_h // rows
 
     if len(years) == 1:
         month_cols = 3  # столбцы 
