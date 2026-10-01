@@ -1,11 +1,14 @@
 import io, base64, calendar
 from datetime import datetime, date, timedelta
-import math
+
 from PIL import Image, ImageDraw, ImageFont
+
+from calendar_generator.config import CalendarConfig
 from calendar_generator.layouts.years import compute_year_grid
 from calendar_generator.progress import calc_progress
 
-def render_png_base64(cfg):
+
+def render_png_base64(cfg: "CalendarConfig"):
     img=Image.new("RGB",(cfg.width,cfg.height),cfg.background_color)
     draw=ImageDraw.Draw(img)
     font=ImageFont.load_default(size=24)
@@ -18,6 +21,21 @@ def render_png_base64(cfg):
     area_w=cfg.width-pad["left"]-pad["right"]
     area_h=cfg.height-pad["top"]-pad["bottom"]-520
 
+    if cfg.width <= 0:
+        raise ValueError("width must be positive")
+
+    if cfg.height <= 0:
+        raise ValueError("height must be positive")
+
+    if cfg.scale <= 0:
+        raise ValueError("scale must be positive")
+
+    if not 0 < cfg.circle_ratio <= 1:
+        raise ValueError("circle_ratio must be between 0 and 1")
+
+    if cfg.start_date > cfg.end_date:
+        raise ValueError("start_date must not be later than end_date")
+
     years=list(range(start.year,end.year+1))
     rows,cols=compute_year_grid(years)
 
@@ -26,15 +44,27 @@ def render_png_base64(cfg):
 
     if len(years) == 1:
         month_cols = 3  # столбцы 
+        month_rows = 4  # строки
+    else :
+        month_cols = 4  # столбцы 
         month_rows = 3  # строки
-    else:
-        return "Error: Only one year is supported for rendering."
 
     max_month_w = block_w // month_cols
-    max_month_h = block_h // month_rows * 0.7
+    max_month_h = block_h // month_rows
+    
+    base_cell = min(
+        (max_month_w - 10) // 7,
+        (max_month_h - 18) // 6
+    )
 
-    cell=min((max_month_w-10)//7,(max_month_h-18)//6)
-    cell=max(2,int(cell*cfg.scale))
+    cell = max(2, int(base_cell * cfg.scale))
+
+    max_cell = min(
+        (max_month_w - 10) // 7,
+        (max_month_h - 18) // 6
+    )
+
+    cell = min(cell, max_cell)
 
     for idx,year in enumerate(years):
         bx=pad["left"]+(idx%cols)*block_w
@@ -61,7 +91,8 @@ def render_png_base64(cfg):
 
             # Координаты месяца
             i_cols = (month - 1) % month_cols
-            i_rows = (month - 1) // month_rows
+            i_rows = (month - 1) // month_cols
+
             # ряд
             mx = bx + i_cols * max_month_w
             # столбец
@@ -97,8 +128,8 @@ def render_png_base64(cfg):
                     x = mx + c * cell
                     y = my + r * cell
 
-                    circle_ratio = 0.5
-                    diameter = int(cell * circle_ratio)
+                    circle_ratio = min(1.0, max(0.0, float(cfg.circle_ratio)))
+                    diameter = max(1, int(cell * circle_ratio))
                     offset = (cell - diameter) // 2
 
                     if cfg.day_style=="circle":
