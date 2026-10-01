@@ -21,21 +21,6 @@ def render_png_base64(cfg: "CalendarConfig"):
     area_w=cfg.width-pad["left"]-pad["right"]
     area_h=cfg.height-pad["top"]-pad["bottom"]-520
 
-    if cfg.width <= 0:
-        raise ValueError("width must be positive")
-
-    if cfg.height <= 0:
-        raise ValueError("height must be positive")
-
-    if cfg.scale <= 0:
-        raise ValueError("scale must be positive")
-
-    if not 0 < cfg.circle_ratio <= 1:
-        raise ValueError("circle_ratio must be between 0 and 1")
-
-    if cfg.start_date > cfg.end_date:
-        raise ValueError("start_date must not be later than end_date")
-
     years=list(range(start.year,end.year+1))
     rows,cols=compute_year_grid(years)
 

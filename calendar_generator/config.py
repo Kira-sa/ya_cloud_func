@@ -87,3 +87,4 @@ class CalendarConfig:
             raise ValueError(
                 "day_style must be circle, rectangle or number"
             )
+        
