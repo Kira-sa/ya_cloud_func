@@ -83,11 +83,6 @@ class CalendarConfig:
                 "start_date must not be later than end_date"
             )
 
-        if start.year != end.year:
-            raise ValueError(
-                "Only one year is supported"
-            )
-
         if self.day_style not in {"circle", "rectangle", "number"}:
             raise ValueError(
                 "day_style must be circle, rectangle or number"
