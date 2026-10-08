@@ -32,7 +32,7 @@ def handler(event, context):
             "body": png_b64,
         }
 
-    except (ValueError, json.JSONDecodeError) as exc:
+    except (ValueError, TypeError, json.JSONDecodeError) as exc:
         return {
             "statusCode": 400,
             "headers": {

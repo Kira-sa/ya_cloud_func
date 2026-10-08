@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 from datetime import date
 
 
+FOOTER = 520
+
 DEFAULT_PADDING = {
     "top": 250,
     "bottom": 300,
@@ -132,7 +134,7 @@ class CalendarConfig:
             self.height
             - self.padding["top"]
             - self.padding["bottom"]
-            - 520
+            - FOOTER
         )
 
         if area_w <= 0:
